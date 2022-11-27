@@ -1,0 +1,45 @@
+# configurar git y branch conforme se indica
+- conectarse al cluster
+- crear el proycto
+- crear la app, basandose en git como source, # para indicar el branch y context-dir para indicar el directorio a usar
+~~~
+oc new-app php:7.3 --name=php-helloworld https://github/plescorzag/DO180-apps#s2i --context-dir php-world
+~~~ 
+
+- esperar por el build verificar que se ha completado 
+- verificar los logs
+~~~
+oc logs --all-cotainers -f php-helloworld-1-build
+~~~
+
+- revisar el deployment 
+
+- añadir la ruta:
+~~~
+oc expose service php-helloworld --name pescorza-helloword
+~~~
+
+- verificar la url 
+
+- Actualizar el index de php-helloworld
+
+-commit the change
+
+- iniciar un nuevo build
+~~~
+oc start-build php-helloworld
+~~~
+
+
+Resolver problemas de permisos
+oc adm policy add-role-to-user anyuid -z default 
+
+
+
+permisos para contenedores en local
+podman unshare chown 27:27 /mymysqldisk
+
+
+ajustar permisos de directorios locales
+semanage fcontext -a -t container_file_t /base/directorio(./*)?
+restore -R /base/directorio
